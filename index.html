@@ -1,0 +1,70 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Game of Life</title>
+    <script src="gameoflife.js"></script>
+  </head>
+  <body>
+    <canvas id="myCanvas" style="border:1px solid #d3d3d3;"></canvas>
+    <script>
+      var glider = [[0,1,0],[0,0,1],[1,1,1]];
+      var unbounded = [[1,1,1,0,1],[1,0,0,0,0],[0,0,0,1,1],[0,1,1,0,1],[1,0,1,0,1]];
+      var infinite = [[1,1,1,0,1],[1,0,0,0,0],[0,0,0,1,1],[0,1,1,0,1],[1,0,1,0,1]];
+
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.fillStyle="#000000";
+
+      var spacing = 2;
+      var columns = 80;
+      var rows = 40;
+      var size = 10;
+      var width = spacing + columns*(size+spacing);
+      var height = spacing + rows*(size+spacing);
+      c.height = height;
+      c.width = width;
+
+      var gol = new GameOfLife(columns, rows);
+
+      function clear() {
+        ctx.clearRect(0, 0, width, height);
+      }
+
+      function renderCell(x, y)
+      {
+        ctx.fillRect(spacing + (spacing+size)*x, spacing + (spacing+size)*y, size, size);
+      }
+
+      function initArray(x, y, data)
+      {
+        var i, j;
+        for (i = 0; i < data[0].length; i++)
+        {
+          for (j = 0; j < data.length; j++)
+          {
+            if (data[j][i] == 1)
+            {
+              gol.setCell(x + i, y + j);
+            }
+          }
+        }
+      }
+      
+      initArray(1, 1, glider);
+      //initArray(40, 20, unbounded);
+      initArray(40, 20, infinite);
+
+      function renderGrid()
+      {
+        clear();
+        gol.render(renderCell);
+        gol.nextStep();
+
+        setTimeout(renderGrid, 200)
+      }
+
+      renderGrid();
+    </script>
+  </body>
+</html> 
