@@ -4,8 +4,12 @@ function GameOfLife(width, height) {
   this.grid = [];
 }
 
-GameOfLife.prototype.setCell = function(x, y) {
-  this.grid[y*this.width + x] = 1;
+GameOfLife.prototype.setCell = function(x, y, val = true) {
+  this.grid[y*this.width + x] = val ? 1 : 0;
+};
+
+GameOfLife.prototype.getCell = function(x, y) {
+  return this.grid[y*this.width + x] == 1;
 };
 
 GameOfLife.prototype.render = function(renderFunc) {
@@ -55,5 +59,9 @@ GameOfLife.prototype.nextStep = function() {
   }
 
   this.grid = newGrid;
+};
+
+GameOfLife.prototype.clear = function() {
+  this.grid = [];
 };
 
